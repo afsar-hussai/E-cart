@@ -1,0 +1,13 @@
+{
+  "name": "full-stack-app",
+  "module": "index.js",
+  "scripts": {
+    "FRONTEND":"cd E-cart && bun dev",
+    "BACKEND":"cd Backend && bun dev",
+    "project":"concurrently --names \"FRONTEND,BACKEND\" --prefix-colors \"blue,green\" \"bun run FRONTEND\" \"bun run BACKEND"
+  },
+  "dependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "type": "module"
+}
