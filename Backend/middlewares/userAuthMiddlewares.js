@@ -7,6 +7,7 @@ class UserAuthMiddlewares {
   dbService;
   bcrypt;
   JWT;
+  otp={};
   constructor() {
     this.dbService = require("../services/userServices");
     this.bcrypt = require('bcrypt');
@@ -71,9 +72,13 @@ class UserAuthMiddlewares {
 
 
     const data = req.body;
+    
+    
 
 
-    const passwordInDbObj = await this.dbService.getUser({ email: data.email });
+    const passwordInDbObj = await this.dbService.getUser({ email: data.email ||  req.user.email });
+    
+    
 
     const compareValue = await this.bcrypt.compare(data.password, passwordInDbObj.password);
 
@@ -123,7 +128,9 @@ class UserAuthMiddlewares {
         if (err) {
           return res.status(401).json({ message: "Invalid or expired token" });
         }
+        
         req.user = user;
+        
         next();
       });
     } catch (error) {
@@ -162,9 +169,11 @@ class UserAuthMiddlewares {
   };
 
   //otp generate middleware
-  otpMiddleware=async (req,res,next)=>{
-    const otp=authFunctions.otpGenerator();
-    req.otp=otp;
+  otpMiddleware=(req,res,next)=>{
+    this.otp=authFunctions.otpGenerator();
+    console.log("otp object is: ",this.otp);
+    
+    
     next();
 }
 
@@ -172,9 +181,13 @@ class UserAuthMiddlewares {
   //send OTP Email
 
   sendOTPEmail = async (req,res,next) => {
-    const otp = req.otp
+
+    try {
+    
     const userEmail=req.user.email;
     console.log("This is user Email in sendOTPEmail middleware: ",userEmail);
+    console.log("otp in sendOTPEmail: ",this.otp);
+    
     
 
     //setting transporter
@@ -188,20 +201,25 @@ class UserAuthMiddlewares {
       },
     })
 
+    console.log("transporter in sendOTPEmail: ",transporter);
+    
+
     const mailOptions = {
-      from: `"E-Cart from Ashu Dev" ${process.env.EMAIL_USER}`,
+      from: `"E-Cart from Ashu Dev 🌺🥦" <${process.env.EMAIL_USER}>`,
       to: userEmail, // Recipient's email
       subject: 'Your OTP Code',
-      text: `Your OTP is: ${otp}`, // Plain text body
-      html: `<h1>Your OTP is: ${otp}</h1>`,
+      text: `Your OTP is: ${this.otp.otp} and expires in 5 minutes`, // Plain text body
+      html: `<h1>Your OTP is: ${this.otp.otp}</h1>`,
     }
 
-    try {
+    
       const info=await transporter.sendMail(mailOptions);
+      console.log("info is: ",info);
+      
 
       console.log("OTP sent successfully: ",info.messageId);
 
-      req.otp=otp;
+      
       next();
       
       
@@ -213,6 +231,37 @@ class UserAuthMiddlewares {
       
     }
 
+
+
+  }
+
+  verifyOtp=async (req,res,next)=>{
+    const enteredOtp=Number(req.body.otp);
+    const sentOtp=this.otp;
+    console.log("enteredOtp is: ",enteredOtp);
+    console.log("sentOtp is: ",sentOtp);
+    
+    if (!this.otp) {
+      return res.send({valid:false,message:'OTP Not Found'})
+      
+    }
+
+    const {otp,expiry}=sentOtp;
+
+    if (Date.now()>expiry) {
+      delete this.otp.otp;
+      delete this.otp.expiry;
+      return res.json({valid:false,message:'OTP Expired'})
+      
+    }
+
+    if (enteredOtp===otp) {
+      delete this.otp.otp;
+      delete this.otp.expiry;
+      return next()
+      
+    }
+    return res.json({valid:false,message:'Invalid OTP'});
 
 
   }

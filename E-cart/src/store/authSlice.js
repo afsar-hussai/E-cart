@@ -21,10 +21,11 @@ const authSlice=createSlice({
             state.status=false;
             state.userData=null;
 
-        }
+        },
+        
     }
 
 })
 
-export const {updateState, updateStateToFalse}=authSlice.actions;
+export const {updateState, updateStateToFalse  }=authSlice.actions;
 export default authSlice.reducer;

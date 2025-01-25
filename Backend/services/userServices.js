@@ -17,9 +17,9 @@ class Service{
 
     }
 
-    async updateUser(userData){
+    async updateUser(search,userData){
 
-        return await this.Users.findOneAndUpdate(userData,{new:true})
+        return await this.Users.findOneAndUpdate({email:search},userData,{new:true})
 
     }
     async deleteUser(id){

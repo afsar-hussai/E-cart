@@ -15,7 +15,15 @@ class AuthFunctions{
     }
 
     otpGenerator=()=>{
-        return Math.floor(10000+Math.random()*900000)
+        const otp=Math.floor(10000+Math.random()*900000);
+        console.log("otp in otpGenerator is: ",otp);
+        
+
+        return {
+            otp,
+            expiry:Date.now()+5*60*1000
+
+        }
     }
 }
 

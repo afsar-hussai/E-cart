@@ -7,7 +7,7 @@ import { Footer, Header } from "./components"
 import {Outlet} from "react-router-dom";
 import { useEffect, useState } from "react";
 import backendAuth from "./BackendFunctions/BackendAuth";
-import { updateState } from "./store/authSlice";
+import {  updateState } from "./store/authSlice";
 import { toast } from "sonner";
 
 
@@ -17,12 +17,16 @@ function App() {
   const userStatus=useSelector(state=>state.auth.status);
   const dispatch=useDispatch();
   const token=localStorage.getItem('token');
+  console.log("userStatus: ",userStatus)
+  
+ 
   
   useEffect(() => {
     let isMounted = true;
     let toastShown = false;
 
     const handleAuthentication = async () => {
+      
       try {
         if (token) {
           const response = await backendAuth.getUser({ token });
@@ -59,7 +63,7 @@ function App() {
             
           }
         }
-      }
+      } 
     };
 
 

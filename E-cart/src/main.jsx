@@ -5,7 +5,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-// import {AdminLogin, Home,  ProductDetails, Signin, Signup} from './components'
+
 import  AdminLogin  from './pages/admin/AdminLogin'
 import  Home  from './pages/Home'
 import  Products  from './pages/Products'
@@ -16,6 +16,8 @@ import { Provider } from 'react-redux'
 import store from './store/store.js'
 import Profile from './pages/user/Profile.jsx'
 import Update from './pages/user/Update.jsx'
+import ProtectedRoute from './pages/ProctedRoute.jsx'
+import Test from './pages/Test.jsx'
 
 
 const router=createBrowserRouter([
@@ -43,6 +45,14 @@ const router=createBrowserRouter([
       {
         path:'/profile/update',
         element:<Update/>
+      },
+      {
+        path:'/test',
+        element:(
+          <ProtectedRoute>
+            <Test />
+          </ProtectedRoute>
+        )
       }
       
 
@@ -63,6 +73,7 @@ const router=createBrowserRouter([
     path:'admin',
     element:<AdminLogin />
   },
+  
  
   
 

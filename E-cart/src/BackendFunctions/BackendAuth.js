@@ -81,7 +81,7 @@ class BackendAuth {
             return response.data
 
         } catch (error) {
-            console.log("error in backendAuth of login: ", error.response?.data?.message);
+            console.log("error in backendAuth of login: ",error || error.response?.data?.message);
 
 
             console.error('Login Failed due to Error: ', error.response?.data || error.message);
@@ -140,11 +140,11 @@ class BackendAuth {
     }
 
 
-    async updateUser({ oldPassword,otp,newPassword},token) {
+    async updateUser({ newPassword},token) {
 
         try {
-            const response = await this.api.post('/profile/update',
-                {oldPassword,otp,newPassword},
+            const response = await this.api.post('/profile/update/newupdate',
+                {password:newPassword},
                 {
                 headers:{
                     Authorization:`Bearer ${token}`
@@ -170,7 +170,7 @@ class BackendAuth {
 
         try {
             const response=await this.api.post('/profile/update/oldPassword',
-                {oldPassword},
+                {password:oldPassword},
                 {
                     headers:{
                         Authorization:`Bearer ${token}`
@@ -179,10 +179,12 @@ class BackendAuth {
                 },
                 
             )
+            console.log("checkOldPasssword response is: ",response);
+            
             return response.data
             
         } catch (error) {
-            console.error('Error Occured in updating: ', error.response?.data || error.message);
+            console.error('Error Occured in updating: ', error.response?.data.message || error.message);
 
             throw error;
 
@@ -199,14 +201,17 @@ class BackendAuth {
             const response=await this.api.get('/profile/update/otp',{
                 headers:{
                     Authorization:`Bearer ${token}`
-                }
+                },
+                
             }
                 
             )
+
+            console.log("otpSender response is: ",response);
             return response.data
             
         } catch (error) {
-            console.error('Error Occured in updating: ', error.response?.data || error.message);
+            console.error('Error Occured in updating: ', error ||error.response?.data );
 
             throw error;
 
@@ -222,6 +227,7 @@ class BackendAuth {
             const response=await this.api.post('profile/update/verify-otp',
                 {otp}
             )
+            console.log("verifyOtp response is: ",response);
 
             return response.data
             
@@ -232,6 +238,8 @@ class BackendAuth {
             
         }
     }
+
+
 
     async adminLogin({ email, password }) {
         try {
