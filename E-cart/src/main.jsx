@@ -40,7 +40,11 @@ const router=createBrowserRouter([
       },
       {
         path:'profile',
-        element:<Profile />,
+        element:(
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
       },
       {
         path:'/profile/update',
@@ -70,7 +74,7 @@ const router=createBrowserRouter([
     element:<Signup />
   },
   {
-    path:'admin',
+    path:'admin/sign-in',
     element:<AdminLogin />
   },
   

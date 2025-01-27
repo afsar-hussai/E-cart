@@ -122,7 +122,7 @@ function Signin() {
 
           <div className="text-blue-500 font-bold">
 
-            <Link to='/admin' >
+            <Link to='/admin/sign-in' >
               Admin Login
             </Link>
 

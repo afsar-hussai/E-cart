@@ -11,33 +11,21 @@ import { toast } from "sonner";
 
 
 function ProtectedRoute({children}) {
-  const {status}=useSelector(state=>state.auth);
+  const isLogged=useSelector(state=>state.auth.status);
   
-  const [isLogged, setIsLogged] = useState(false);
-  console.log("status is: ",status)
-
-
-  useEffect(()=>{
-
-   
   
-   
-    if (status) {
-      setIsLogged(status);
-    }
+  console.log("status is: ",isLogged)
 
 
-
-  },[status])
-
+  
   
 
   // Allow access to the protected route if authenticated
-  return (isLogged)?children:<Navigate to='/sign-in' />
+  return isLogged?children:<Navigate to='/sign-in' />
   
  
   
-// return status?children:<Navigate to='/sign-in' />
+
 
 }
 

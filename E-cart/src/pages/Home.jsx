@@ -9,6 +9,10 @@ function Home() {
       <Link to='/product-details'>
       <button>To Product Details</button>
       </Link>
+
+      <Link  to='/test' >
+      test
+      </Link>
     </div>
   )
 }

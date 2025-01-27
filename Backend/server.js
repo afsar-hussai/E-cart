@@ -7,6 +7,7 @@ const cookieParser=require('cookie-parser')
 const connectDb = require('./config/dataBaseConnection');
 const authRoutes=require('./routes/authRoutes')
 const updateUser=require('./routes/updateUser')
+const adminRoutes=require('./routes/adminRoutes')
 
 
 const app = express()
@@ -24,6 +25,7 @@ connectDb();
 
 app.use('/auth',authRoutes)
 app.use('/profile/update',updateUser)
+app.use('/admin',adminRoutes)
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)

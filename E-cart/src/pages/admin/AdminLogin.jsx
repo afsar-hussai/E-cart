@@ -3,7 +3,8 @@ import {  useState } from "react"
 import { Link } from "react-router-dom"
 import { useForm } from 'react-hook-form';
 import { Button, Input } from '../../components'
-import backendAuth from "../../BackendFunctions/BackendAuth";
+import adminApisForBackendCommunication from "../../BackendFunctions/AdminApis";
+
 
 
 
@@ -18,10 +19,23 @@ function AdminLogin() {
   } = useForm();
 
 
-  const submitForm = (data) => {
-    console.log("submit button clicked")
-    backendAuth.login(data).then(response=>console.log(response)
-    )
+  const submitForm = async (data) => {
+    console.log("submit button clicked");
+
+    try {
+      const response=await adminApisForBackendCommunication.login(data);
+      console.log("response of Admin Login is: ",response)
+      
+      
+    } catch (error) {
+      console.log("Error in Admin Sign in: ",error);
+      throw error;
+      
+      
+    }
+
+    
+   
     
     
     console.log(data)
@@ -31,12 +45,15 @@ function AdminLogin() {
   }
 
   return (
-    <>
+    <div className="bg-pink-400 h-screen flex justify-center items-center">
+      <div className="bg-white p-2 rounded-md w-1/4">
+
+     
     <h2>Admin Page</h2>
       <div>
-        having user account? <Link to='/sign-in'>Sign in</Link>
+        having user account? <Link to='/sign-in' className="text-blue-700 font-semibold">Sign in</Link>
         <br />
-        Don&apos;t have an account? <Link to='/sign-up'>Sign Up</Link>
+        Don&apos;t have a user account? <Link to='/sign-up' className="text-blue-700 font-semibold">Sign Up</Link>
       </div>
       {error && <div className="text-red-600">{error}</div>}
 
@@ -58,6 +75,7 @@ function AdminLogin() {
         />
 
         {errors.email && <p className="text-red-600">{errors.email.message}</p>}
+        {error && <p className="text-red-600">{error}</p>}
 
 
         <Input
@@ -78,7 +96,7 @@ function AdminLogin() {
         />
 
 {errors.password && <p className="text-red-600">{errors.password.message}</p>}
-
+{error && <p className="text-red-600">{error}</p>}
 
         <Button
           type='submit'
@@ -86,8 +104,8 @@ function AdminLogin() {
 
       </form>
 
-      
-    </>
+      </div>
+    </div>
   )
 }
 

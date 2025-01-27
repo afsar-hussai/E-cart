@@ -14,10 +14,11 @@ import { toast } from "sonner";
 
 function App() {
 
-  const userStatus=useSelector(state=>state.auth.status);
+  // const userStatus=useSelector(state=>state.auth.status);
   const dispatch=useDispatch();
+  const [isLoading, setIsLoading] = useState(true);
   const token=localStorage.getItem('token');
-  console.log("userStatus: ",userStatus)
+ 
   
  
   
@@ -31,6 +32,8 @@ function App() {
         if (token) {
           const response = await backendAuth.getUser({ token });
           if (response) {
+            console.log("1st Try in App.jsx")
+            
             dispatch(updateState({ email: response?.email }));
            
            
@@ -44,6 +47,7 @@ function App() {
             localStorage.setItem('token', newTokenResponse.token);
             const newUserResponse = await backendAuth.getUser({ token: newTokenResponse.token });
             if (newUserResponse) {
+              console.log("2 Try in App.jsx")
               dispatch(updateState({ email: newUserResponse?.email }));
               
             }
@@ -63,7 +67,9 @@ function App() {
             
           }
         }
-      } 
+      } finally {
+        setIsLoading(false);
+      }
     };
 
 
@@ -82,16 +88,13 @@ function App() {
   
   }, [dispatch, token]);
   
-  // useEffect(() => {
-  //   if (userStatus) {
-  //     toast.success("Welcome",{
-  //       duration:1000
-  //     });
-      
-  //   }
-  // }, [userStatus])
+
   
 
+  if (isLoading) {
+    return <div className="flex justify-center items-center bg-slate-900 text-white h-screen">Loading...</div>;
+    
+  }
   
   
 
