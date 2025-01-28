@@ -1,16 +1,22 @@
+
 class AdminMiddleware{
 
-    JWT;
-    adminService;
-    bcrypt;
+    // JWT;
+    // adminService;
+    // bcrypt;
+   
 
     constructor(){
         this.JWT=require('jsonwebtoken')
         this.adminService=require('../services/adminServices');
         this.bcrypt=require('bcrypt')
+        
+
     }
 
     isUserExistinDb=async (req,res,next)=>{
+      
+        
         const data=req.body
         const response=await this.adminService.getAdmin({email:data.email});
         
@@ -40,14 +46,10 @@ class AdminMiddleware{
         return res.status(401).json({message:'Password didn\'t matched'})
     }
 
-    jwtSign=(req,res,next)=>{
-        const body=req.body;
-        console.log("jwtSign body in Admin: ",body);
-        
-        const token=this.JWT.sign(body.email,process.env.JWT_SECRET_KEY,{expiresIn:'1d'});
-        req.token=token;
-        next();
     
+
+    createSession=async (req,res,next)=>{
+
     }
 }
 
