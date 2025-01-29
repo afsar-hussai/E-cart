@@ -4,10 +4,11 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { Footer, Header } from "./components"
-import {Outlet} from "react-router-dom";
+import {Outlet, useNavigate} from "react-router-dom";
 import { useEffect, useState } from "react";
 import backendAuth from "./BackendFunctions/BackendAuth";
 import {  updateState } from "./store/authSlice";
+
 import { toast } from "sonner";
 
 
@@ -18,7 +19,7 @@ function App() {
   const dispatch=useDispatch();
   const [isLoading, setIsLoading] = useState(true);
   const token=localStorage.getItem('token');
- 
+
   
  
   
@@ -95,6 +96,7 @@ function App() {
     return <div className="flex justify-center items-center bg-slate-900 text-white h-screen">Loading...</div>;
     
   }
+ 
   
   
 

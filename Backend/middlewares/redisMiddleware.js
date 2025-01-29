@@ -40,7 +40,7 @@ class RedisMiddlewares{
             cookie:{
                 secure:process.env.NODE_ENV === 'production',
                 httpOnly:true,
-                maxAge:1000*60*60*24
+                maxAge:1000*60*60*24 //1 day *60*24
             }
         })
 
@@ -52,15 +52,36 @@ class RedisMiddlewares{
   
 
     //login
-    createSession=async (req,res,next)=>{
-        
-        
-        if (!req.session.user) {
+    createSession=(req,res,next)=>{
+  
             req.session.user=req.body.email;
             next();
-        }
-
     }
+
+    //is authentic to access a route
+
+    isAuthentic=(req,res,next)=>{
+        if(req.session.user){
+            return next();
+        }else{
+            return res.status(404).send('Unauthorized');
+        }
+     }
+     //logout session
+
+     logout=(req,res,next)=>{
+         req.session.destroy(err=>{
+            if (err) {
+                console.log("error in destroying session",err);
+                return res.status(500).send('Internal Server Error');
+               
+            }
+            res.clearCookie('connect.sid');
+            return res.status(200).send('Logged out successfully');
+         })
+     }
+
+
 }
 const redisMiddlewares=new RedisMiddlewares();
 module.exports=redisMiddlewares;

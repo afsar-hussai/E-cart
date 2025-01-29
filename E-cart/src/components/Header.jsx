@@ -1,36 +1,38 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link } from "react-router-dom"
 import { updateStateToFalse } from "../store/authSlice"
-import { toast,  } from "sonner"
+import { toast, } from "sonner"
 
 
-function Header() {
+function Header({children}) {
     const [user, setUser] = useState(false)
-    const userStatus=useSelector(state=>state.auth.status)
-   
-    const dispatch=useDispatch()
+    const userStatus = useSelector(state => state.auth.status)
 
-    const logoutClick=()=>{
-        dispatch(updateStateToFalse())  
+    const dispatch = useDispatch()
+
+    const logoutClick = () => {
+        dispatch(updateStateToFalse())
         localStorage.clear();
-        toast.success('logged out successfully!!',{
-            duration:1000
-          })
+        toast.success('logged out successfully!!', {
+            duration: 1000
+        })
 
 
-}
-    
-    useEffect(()=>{
+    }
+
+    useEffect(() => {
 
         setUser(userStatus)
-        
-        
-    },[userStatus])
+
+
+    }, [userStatus])
     return (
         <header className="flex justify-between bg-red-400 p-4">
-           
+
             <div className=" bg-green-800 rounded-full p-2">
                 Logo
             </div>
@@ -51,24 +53,34 @@ function Header() {
                 </div>
             </div>
 
-            <nav>
+            <nav className="flex justify-center items-center gap-5">
                 {user ?
 
                     <div className="flex gap-5">
-                    
-                    <button onClick={logoutClick}>Logout</button>
 
-                    <Link to='/profile'>
-                    <button>Profile</button>
-                    </Link>
+                        <button onClick={logoutClick}>Logout</button>
+
+                        <Link to='/profile'>
+                            <button>Profile</button>
+                        </Link>
                     </div>
 
-                    
+
 
                     : <Link to='/sign-in' >
                         <button >Sign in</button>
                     </Link>}
+
+                    {
+                        user?null:<Link to='admin/dashboard'>
+                        Admin?
+                        </Link>
+                    }
+
+                    
             </nav>
+
+
             <div>
                 Cart
             </div>

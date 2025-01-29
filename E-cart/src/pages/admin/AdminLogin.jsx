@@ -1,15 +1,20 @@
 /* eslint-disable no-unused-vars */
 import {  useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useForm } from 'react-hook-form';
 import { Button, Input } from '../../components'
 import adminApisForBackendCommunication from "../../BackendFunctions/AdminApis";
+import { useDispatch } from "react-redux";
+import { updateState } from "../../store/adminSlice";
 
 
 
 
 function AdminLogin() {
   const [error, setError] = useState("");
+  const navigate=useNavigate();
+  const dispatch=useDispatch();;
+
   
   const {
     register,
@@ -24,16 +29,25 @@ function AdminLogin() {
 
     try {
       const response=await adminApisForBackendCommunication.login(data);
-      console.log("response of Admin Login is: ",response)
+      setError("");
+      
+      
+      if(response){
+        console.log("Admin Logged in successfully");
+        dispatch(updateState(response.data));
+        
+        navigate('/admin/dashboard');
+      }
+      
       
       
     } catch (error) {
       console.log("Error in Admin Sign in: ",error);
+      setError(error?.response?.data?.message||error.message);
       throw error;
       
       
     }
-
     
    
     
@@ -43,6 +57,7 @@ function AdminLogin() {
     
 
   }
+  
 
   return (
     <div className="bg-pink-400 h-screen flex justify-center items-center">
@@ -75,7 +90,7 @@ function AdminLogin() {
         />
 
         {errors.email && <p className="text-red-600">{errors.email.message}</p>}
-        {error && <p className="text-red-600">{error}</p>}
+        {/* {error && <p className="text-red-600">{error}</p>} */}
 
 
         <Input
@@ -96,7 +111,7 @@ function AdminLogin() {
         />
 
 {errors.password && <p className="text-red-600">{errors.password.message}</p>}
-{error && <p className="text-red-600">{error}</p>}
+{/* {error && <p className="text-red-600">{error}</p>} */}
 
         <Button
           type='submit'

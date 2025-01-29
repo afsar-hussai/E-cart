@@ -27,6 +27,33 @@ class AdminApis{
             throw error;
         }
     }
+
+    async authenticate(){
+        try{
+            const response=await this.api.get('/admin/authenticate',{
+                withCredentials:true
+            });
+            return response.data;
+        }catch(error){
+            console.error('Login Failed due to Error: ',error || error.response?.data);
+            throw error;
+        }
+
+    }
+
+
+    async logout(){
+        try{
+            const response=await this.api.get('/admin/logout',{
+                withCredentials:true
+            });
+            return response.data;
+        }catch(error){
+            console.error('Login Failed due to Error: ',error || error.response?.data);
+            throw error;
+        }
+
+    }
     
 
 

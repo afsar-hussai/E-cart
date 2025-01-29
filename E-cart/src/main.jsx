@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 import { Toaster } from 'sonner'
 import { StrictMode } from 'react'
@@ -18,6 +19,8 @@ import Profile from './pages/user/Profile.jsx'
 import Update from './pages/user/Update.jsx'
 import ProtectedRoute from './pages/ProctedRoute.jsx'
 import Test from './pages/Test.jsx'
+import Dashboard from './pages/admin/Dashboard.jsx'
+import AdminProtectedRoute from './pages/AdminProtectedRoute.jsx'
 
 
 const router=createBrowserRouter([
@@ -76,6 +79,13 @@ const router=createBrowserRouter([
   {
     path:'admin/sign-in',
     element:<AdminLogin />
+  },
+  {
+    path:'admin/dashboard',
+    element:(
+      <Dashboard/>
+     
+    )
   },
   
  
