@@ -5,27 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateState ,updateStateToFalse } from "../../store/adminSlice";
 import { toast } from "sonner";
 import adminApisForBackendCommunication from "../../BackendFunctions/AdminApis";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, Outlet } from "react-router-dom";
+import { Footer, Header } from "../../components";
+import AdminHeader from "./AdminHeader";
 
 function Dashboard() {
     const [loading, setLoading] = useState(true);
     const dispatch=useDispatch();
     const userState=useSelector(state=>state.admin.status);
 
-    const handleLogout=async ()=>{
-        try {
-            const response=await adminApisForBackendCommunication.logout();
-            console.log("response of logout is: ",response)
-            toast.success('Logged out successfully');
-            dispatch(updateStateToFalse());
-            
-            
-        } catch (error) {
-            console.log("Error in Logout",error);
-            throw error;            
-            
-        }
-    }
+    
 
     
     
@@ -81,14 +70,24 @@ function Dashboard() {
 
   return (
     <div>
+
+        
+
+        <Header>
+            <AdminHeader/>
+
+        </Header>
+
+        <main className="h-screen" >
+            <Outlet/>
+        </main>
+
+        <Footer/>
         
         
-        <button
-        onClick={handleLogout}
         
-        >Logout</button>
         
-      This is Dashboard page under admin folder.
+      
     </div>
   )
 }

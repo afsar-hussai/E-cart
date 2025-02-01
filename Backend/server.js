@@ -9,7 +9,8 @@ const cookieParser = require('cookie-parser')
 const connectDb = require('./config/dataBaseConnection');
 const authRoutes = require('./routes/authRoutes')
 const updateUser = require('./routes/updateUser')
-const adminRoutes = require('./routes/adminRoutes')
+const adminRoutes = require('./routes/adminRoutes');
+const productRoutes=require('./routes/productRoutes')
 
 
 const app = express()
@@ -24,14 +25,34 @@ app.use(cookieParser())
 
 connectDb();
 
-(async () => {
+const serverRoutes=async () => {
 
   try {
     await redisMiddlewares.init();
     app.use(redisMiddlewares.sessionMddleware);
     app.use('/auth', authRoutes)
     app.use('/profile/update', updateUser)
-    app.use('/admin', adminRoutes)
+    app.use('/admin', adminRoutes);
+    app.use('/product',productRoutes)
+
+
+    app.use((req,res)=>{
+      console.log("Page not found");
+      
+      res.status(404).send('Page not foundddd')
+    })
+
+   
+    app.use((err, req, res, next) => {
+      console.error(err.stack);
+      res.status(500).json({
+          success: false,
+          message: 'Internal Server Error. Please try again later.',
+      });
+  });
+    
+
+
   
     app.listen(port, () => {
       console.log(`Example app listening on port ${port}`)
@@ -45,7 +66,9 @@ connectDb();
  
 
 
-})()
+}
+
+serverRoutes();
 
 
 

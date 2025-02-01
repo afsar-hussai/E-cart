@@ -21,6 +21,12 @@ import ProtectedRoute from './pages/ProctedRoute.jsx'
 import Test from './pages/Test.jsx'
 import Dashboard from './pages/admin/Dashboard.jsx'
 import AdminProtectedRoute from './pages/AdminProtectedRoute.jsx'
+import Analytics from './pages/admin/Analytics.jsx'
+import AdminHome from './pages/admin/AdminHome.jsx'
+import ErrorPage from './pages/ErrorPage.jsx'
+import ProductManagement from './pages/admin/ProductManagement.jsx'
+import OrderManagement from './pages/admin/OrderManagement.jsx'
+import ContentManagement from './pages/admin/ContentManagement.jsx'
 
 
 const router=createBrowserRouter([
@@ -81,12 +87,35 @@ const router=createBrowserRouter([
     element:<AdminLogin />
   },
   {
-    path:'admin/dashboard',
-    element:(
-      <Dashboard/>
-     
-    )
+    path:'admin/dashboard/',
+    element:<Dashboard/>,
+    children:[
+      {
+        index:true,
+        element:<AdminHome />
+      },
+      {
+        path:'analytics',
+        element:<Analytics />
+      },
+      {
+        path:'product-management',
+        element:<ProductManagement />
+      },
+      {
+        path:'order-management',
+        element:<OrderManagement />
+      },
+      {
+        path:'content-management',
+        element:<ContentManagement />
+      },
+    ]
   },
+  {
+    path:'*',
+    element:<ErrorPage />
+  }
   
  
   

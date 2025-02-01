@@ -8,6 +8,7 @@ import {Outlet, useNavigate} from "react-router-dom";
 import { useEffect, useState } from "react";
 import backendAuth from "./BackendFunctions/BackendAuth";
 import {  updateState } from "./store/authSlice";
+import UserHeader from "./pages/user/UserHeader";
 
 import { toast } from "sonner";
 
@@ -109,7 +110,9 @@ function App() {
 
 
     
-      <Header />
+      <Header>
+        <UserHeader />
+      </Header>
       
 
       <main className="h-screen">

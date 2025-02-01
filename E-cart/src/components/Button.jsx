@@ -12,7 +12,7 @@ function Button({
     <div>
         <button
        type={type}
-        className={` bg-slate-400 p-2 rounded-sm ${className}`}
+        className={` p-2 rounded-sm ${className || ""}`}
         {...props}
         >{childText || props.children}</button>
       

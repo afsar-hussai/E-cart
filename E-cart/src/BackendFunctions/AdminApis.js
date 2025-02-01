@@ -8,7 +8,7 @@ class AdminApis{
     constructor(){
         this.api=axios.create({
             baseURL:config.backendURL,
-            timeout:5000,
+            timeout:10000,
             headers:{
                 'Content-Type':'application/json',
             }
