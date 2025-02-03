@@ -17,18 +17,27 @@ function ProductManagement() {
   } = useForm();
 
   const submitProduct=async (data)=>{
+    const {image,...rest}=data;
     try {
     
       
-      const response=await productManagement.createProduct(data);
+      const response=await productManagement.createProduct(rest);
+      const imageResponse=await productManagement.uploadImage(image);
+      console.log("imageResponse is: ",imageResponse)
+      
+
+      if (response && imageResponse) {
+        toast.success(response.message)
+        reset()
+        
+      }
      
-      toast.success(response.message)
-      reset()
+     
       
       
     } catch (error) {
       console.log("Error in ProjectManagement: ",error)
-      
+      toast.error(error?.message)
       
     }
 
@@ -123,6 +132,8 @@ function ProductManagement() {
           {...register('image',{
             required:'Please Enter Title'
           })}
+
+          multiple
           />
 
 

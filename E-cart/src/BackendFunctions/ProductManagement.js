@@ -34,6 +34,36 @@ class ProductManagement{
         }
         
     }
+
+
+    //upload image
+    async uploadImage(data){
+        try {
+            const files=data;
+            const formData=new FormData();
+
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files',files[i])
+                
+            }
+            const response=await this.api.post('/product/image',formData,{
+                headers:{
+                    'Content-Type':"multipart/form-data"
+                },
+                withCredentials:true
+            })
+            console.log("response");
+            return response.data;
+            
+            
+        } catch (error) {
+            console.log("error in uploadImage of ProductManagement: ",error);
+            throw error;
+        }
+    }
+
+
+
 }
 const productManagement=new ProductManagement();
 export default productManagement;
