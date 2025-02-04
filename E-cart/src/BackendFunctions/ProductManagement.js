@@ -37,7 +37,9 @@ class ProductManagement{
 
 
     //upload image
-    async uploadImage(data){
+    async uploadImage(data,productId){
+        
+        
         try {
             const files=data;
             const formData=new FormData();
@@ -46,7 +48,7 @@ class ProductManagement{
                 formData.append('files',files[i])
                 
             }
-            const response=await this.api.post('/product/image',formData,{
+            const response=await this.api.post(`/product/image/${productId}`,formData,{
                 headers:{
                     'Content-Type':"multipart/form-data"
                 },
@@ -60,6 +62,56 @@ class ProductManagement{
             console.log("error in uploadImage of ProductManagement: ",error);
             throw error;
         }
+    }
+
+    //update Product
+
+    async updateProduct(id,data){
+        try {
+            const response=await this.api.get('/product/update',{
+                withCredentials:true
+            })
+            return response.data
+            
+        } catch (error) {
+            console.log("error in createProduct of ProductManagement: ",error);
+            
+            throw error;
+        }
+
+    }
+
+    //get all products
+
+    async allProductsRetrival(){
+        try {
+            const response=await this.api.get('/product/all',{
+                withCredentials:true
+            })
+            return response.data
+            
+        } catch (error) {
+            console.log("error in allProductsRetrival of ProductManagement: ",error);
+            
+            throw error;
+        }
+
+    }
+
+    //delete product
+    async deleteProduct(productId){
+        try {
+            const response=await this.api.get(`/product/delete/${productId}`,{
+                withCredentials:true
+            })
+            return response.data
+            
+        } catch (error) {
+            console.log("error in deleteProduct of ProductManagement: ",error);
+            
+            throw error;
+        }
+
     }
 
 

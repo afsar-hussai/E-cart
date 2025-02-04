@@ -4,10 +4,16 @@ import { Button, Input } from "../../components"
 import { useForm } from "react-hook-form";
 import productManagement from "../../BackendFunctions/ProductManagement";
 import { toast } from "sonner";
+import AdminProductCard from "./AdminProductCard";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllProducts } from "../../store/productSlice";
 
 
 function ProductManagement() {
   const [addState, setAddState] = useState(false);
+  const {products,loading,error}=useSelector(state=>state.product);
+  const dispatch=useDispatch();
   const {
     register,
     handleSubmit,
@@ -16,19 +22,39 @@ function ProductManagement() {
 
   } = useForm();
 
+  
+  useEffect(()=>{
+    dispatch(fetchAllProducts())
+    
+    
+  },[dispatch])
+  console.log("products state in productManagement is: ",products)
+  console.log("products.length is in productManagement is: ",products.length)
+  
+
   const submitProduct=async (data)=>{
     const {image,...rest}=data;
     try {
     
       
       const response=await productManagement.createProduct(rest);
-      const imageResponse=await productManagement.uploadImage(image);
-      console.log("imageResponse is: ",imageResponse)
+      
+      
+      console.log("response in pm fron  is: ",response)
       
 
-      if (response && imageResponse) {
-        toast.success(response.message)
-        reset()
+      if (response ) {
+        try {
+          const imageResponse=await productManagement.uploadImage(image,response.product._id);
+         
+          toast.success(response.message)
+          reset()
+
+          
+        } catch (error) {
+          console.log("Error in ProjectManagement while uploading images: ",error)
+          toast.error(error?.message)
+        }
         
       }
      
@@ -43,12 +69,11 @@ function ProductManagement() {
 
   }
 
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error}</p>;
+
   
-  // title
-  // description
-  // price
-  // category
-  // quantity
+  
   return (
     <div>
       <h1>Product Management</h1>
@@ -168,6 +193,25 @@ function ProductManagement() {
 
         </form>
        )}
+      </div>
+
+
+       
+      <div  >
+        {products.length===0?(
+          <div>No Products to show</div>
+        ):(
+          <div className="flex flex-col gap-3" >
+            {products.map(product=>(
+              <div key={product._id}>
+                {console.log("product._id is: ",product._id)
+                }
+              <AdminProductCard id={product._id}/>
+              </div>
+            ))}
+          </div>
+        )}
+
       </div>
       
 

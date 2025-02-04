@@ -21,13 +21,18 @@ class Service{
 
     async getProduct(productData){
 
-        return await this.Products.findOne(productData)
+        return await this.Products.findOne({_id:productData})
+
+    }
+    async getAllProducts(){
+
+        return await this.Products.find()
 
     }
 
-    async updateProduct(search,productData){
+    async updateProduct(search,productData,imageNames){
 
-        return await this.Products.findOneAndUpdate({email:search},productData,{new:true})
+        return await this.Products.findByIdAndUpdate(search,{imageUrl:productData,imageId:imageNames},{new:true})
 
     }
     async deleteProduct(id){

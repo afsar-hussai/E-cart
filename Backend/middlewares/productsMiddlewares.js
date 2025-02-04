@@ -1,32 +1,47 @@
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
-class ProductsMiddlewares{
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinaryConfig')
 
-    constructor(){
+class ProductsMiddlewares {
+
+    constructor() {
 
         const uploadDir = path.join(__dirname, '../uploads');
-      
-        if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir);
-        }
 
-        const storage=multer.diskStorage({
-            destination:(req,file,cb)=>{
-                cb(null,uploadDir)
-            },
-            filename:(req,file,cb)=>{
-                cb(null,file.originalname)
+
+
+        const storage = new CloudinaryStorage({
+            cloudinary: cloudinary,
+            params: {
+                folder: 'uploads',
+                format: async (req, file) => file.mimetype.split('/')[1],
+                public_id: (req, file) => `${file.originalname.split(".")[0]}-${Date.now()}`
             }
         })
 
-        this.uploadImage=multer({storage:storage}).array('files',5);
-       
-        
+
+        this.uploadImage = multer({
+
+            storage: storage,
+            
+            fileFilter: (req, file, cb) => {
+                const allowedFilesTypes = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif', 'image/webp']
+                if (allowedFilesTypes.includes(file.mimetype)) {
+                    cb(null, true)
+
+                } else {
+                    cb(new Error('Not a correct file type'), false)
+                }
+            }
+
+        }).array('files', 5);
+
+
 
     }
-  
+
 }
 
-const productsMiddlewares=new ProductsMiddlewares();;
-module.exports=productsMiddlewares;
+const productsMiddlewares = new ProductsMiddlewares();;
+module.exports = productsMiddlewares;
