@@ -1,34 +1,51 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-import { toast } from "sonner"
-import productManagement from "../../BackendFunctions/ProductManagement"
+
+// import { toast } from "sonner"
+// import productManagement from "../../BackendFunctions/ProductManagement"
 import { Button } from "../../components"
+import { useDispatch } from "react-redux"
+import { deleteProduct } from "../../store/productSlice";
 
 
-function AdminProductCard({id}) {
+
+function AdminProductCard({
+    id,
+    product,
+    setValue,
+    setAddState,
+    setEditMode,
+    setCurrentProduct,
+    editMode
+}) {
+
+   
+
+
+    const dispatch=useDispatch();
+    
 
     const updateProduct=async ()=>{
-        console.log("update is clicked")
+      console.log("editMode in AdminProductCard is before: ",editMode)
+        setAddState(true);
+        setEditMode((prev)=>!prev);
+        console.log("editMode in AdminProductCard is after set: ",editMode);
+        console.log("product id in AdminProductCard is: ",id)
+        
+        
+        console.log("updateProduct clicked");
+        setCurrentProduct(product);
+        
+        setValue('title',product.title);
+        setValue('description',product.description);
+        setValue('price',product.price);
+        setValue('category',product.category);
+        setValue('quantity',product.quantity);
+       
         
 
     }
 
-    const deleteProduct=async ()=>{
-        try {
-            const response=await productManagement.deleteProduct(id);
-            console.log("response in delete is: ",response);
-            if (response) {
-                toast.success('Product deleted successfully')
-                
-            }
-            
-            
-        } catch (error) {
-            console.log("Error in deleting product",error);
-            throw new error;
-            
-        }
-    }
+    
   return (
     <div className=" border border-slate-950 flex w-1/2 p-3 justify-between items-center">
      <div
@@ -37,7 +54,7 @@ function AdminProductCard({id}) {
         image
      </div>
      <div>
-        description
+        {product.description}
      </div>
 
      <div className="flex gap-2 rounded">
@@ -51,7 +68,7 @@ function AdminProductCard({id}) {
          className="bg-red-700 p-3"
         childText='Delete'
         type="button"
-        onClick={deleteProduct}
+        onClick={()=>dispatch(deleteProduct(id))}
         />
      </div>
     </div>

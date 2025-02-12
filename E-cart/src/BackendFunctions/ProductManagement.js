@@ -42,12 +42,17 @@ class ProductManagement{
         
         try {
             const files=data;
+         
+            
             const formData=new FormData();
+          
+            
 
             for (let i = 0; i < files.length; i++) {
                 formData.append('files',files[i])
                 
             }
+           
             const response=await this.api.post(`/product/image/${productId}`,formData,{
                 headers:{
                     'Content-Type':"multipart/form-data"
@@ -69,6 +74,23 @@ class ProductManagement{
     async updateProduct(id,data){
         try {
             const response=await this.api.get('/product/update',{
+                withCredentials:true
+            })
+            return response.data
+            
+        } catch (error) {
+            console.log("error in createProduct of ProductManagement: ",error);
+            
+            throw error;
+        }
+
+    }
+
+    //updateProductData only
+
+    async updateProductData(id,data){
+        try {
+            const response=await this.api.post(`/product/update/${id}`,data,{
                 withCredentials:true
             })
             return response.data

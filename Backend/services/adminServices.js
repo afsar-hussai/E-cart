@@ -35,9 +35,12 @@ class Service{
         return await this.Products.findByIdAndUpdate(search,{imageUrl:productData,imageId:imageNames},{new:true})
 
     }
+    async updateProductData(search,data){
+        return await this.Products.findByIdAndUpdate(search,data,{new:true})
+    }
     async deleteProduct(id){
 
-        return await this.Products.findOneAndDelete(id)
+        return await this.Products.findByIdAndDelete(id)
 
     }
 

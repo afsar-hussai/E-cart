@@ -69,7 +69,7 @@ function Dashboard() {
     }
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen" >
 
         
 
@@ -78,7 +78,7 @@ function Dashboard() {
 
         </Header>
 
-        <main className="h-screen" >
+        <main className="flex-grow" >
             <Outlet/>
         </main>
 
