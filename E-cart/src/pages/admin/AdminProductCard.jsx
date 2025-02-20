@@ -15,7 +15,7 @@ function AdminProductCard({
     setAddState,
     setEditMode,
     setCurrentProduct,
-    editMode
+    
 }) {
 
    
@@ -25,10 +25,11 @@ function AdminProductCard({
     
 
     const updateProduct=async ()=>{
-      console.log("editMode in AdminProductCard is before: ",editMode)
+      
         setAddState(true);
-        setEditMode((prev)=>!prev);
-        console.log("editMode in AdminProductCard is after set: ",editMode);
+        // setEditMode((prev)=>!prev);
+        setEditMode(true);
+       
         console.log("product id in AdminProductCard is: ",id)
         
         

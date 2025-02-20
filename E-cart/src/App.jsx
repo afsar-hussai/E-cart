@@ -115,7 +115,7 @@ function App() {
       </Header>
       
 
-      <main className="h-screen">
+      <main className="min-h-screen flex-grow">
         <Outlet />
       </main>
 

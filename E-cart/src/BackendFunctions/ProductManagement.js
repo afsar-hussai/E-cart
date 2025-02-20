@@ -79,7 +79,7 @@ class ProductManagement{
             return response.data
             
         } catch (error) {
-            console.log("error in createProduct of ProductManagement: ",error);
+            console.log("error in updateProduct of ProductManagement: ",error);
             
             throw error;
         }

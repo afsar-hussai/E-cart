@@ -1,18 +1,26 @@
-import { Link } from "react-router-dom"
+// import { Link } from "react-router-dom"
+
+import ProductCard from "../components/ProductCard"
 
 
 function Home() {
   return (
-    <div>
-      This is Home
+    <div className="min-h-screen flex flex-wrap">
+     
 
-      <Link to='/product-details'>
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+      <ProductCard />
+
+      {/* <Link to='/product-details'>
       <button>To Product Details</button>
-      </Link>
+      </Link> */}
 
-      <Link  to='/test' >
-      test
-      </Link>
+      
     </div>
   )
 }

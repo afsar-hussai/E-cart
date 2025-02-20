@@ -3,7 +3,7 @@
 function Products() {
   return (
     <div>
-      Product Details
+      Product details
     </div>
   )
 }
