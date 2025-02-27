@@ -10,7 +10,8 @@ const connectDb = require('./config/dataBaseConnection');
 const authRoutes = require('./routes/authRoutes')
 const updateUser = require('./routes/updateUser')
 const adminRoutes = require('./routes/adminRoutes');
-const productRoutes=require('./routes/productRoutes')
+const productRoutes=require('./routes/productRoutes');
+const ordersRoutes=require('./routes/orderRoutes')
 
 
 const app = express()
@@ -33,7 +34,8 @@ const serverRoutes=async () => {
     app.use('/auth', authRoutes)
     app.use('/profile/update', updateUser)
     app.use('/admin', adminRoutes);
-    app.use('/product',productRoutes)
+    app.use('/product',productRoutes);
+    app.use('/orders',ordersRoutes)
 
 
     app.use((req,res)=>{

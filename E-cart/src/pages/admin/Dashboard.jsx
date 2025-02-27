@@ -78,7 +78,7 @@ function Dashboard() {
 
         </Header>
 
-        <main className="flex-grow" >
+        <main className="flex-grow  bg-black text-white" >
             <Outlet/>
         </main>
 
